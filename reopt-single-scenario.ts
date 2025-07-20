@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as fs from 'fs';
 import * as path from 'path';
+import { config } from './config';
 
 // TypeScript interfaces for REopt API
 interface Site {
@@ -147,8 +148,8 @@ export class REoptApiClient {
       
       throw new Error('API polling timed out');
       
-    } catch (error) {
-      console.error('API error:', error.response?.data || error.message);
+    } catch (error: any) {
+      console.error('API error:', error);
       throw error;
     }
   }
@@ -227,7 +228,7 @@ export class REoptApiClient {
    * Save API response to JSON file
    */
   saveApiResponse(response: REoptResponse, fileName: string): void {
-    const filePath = path.join(this.outputsPath, `${fileName}.json`);
+    const filePath = path.join(this.outputsPath, `${fileName}`);
     fs.writeFileSync(filePath, JSON.stringify(response, null, 2));
     console.log(`Saved API response to ${filePath}`);
   }
@@ -318,10 +319,10 @@ async function runSingleScenarioExample() {
     // }
     
     // Save POST data
-    client.savePostData(post1, 'post_2');
+    client.savePostData(post1, config.in);
     
     // Load POST data (demonstration)
-    const loadedPost = client.loadPostData('post_2');
+    const loadedPost = client.loadPostData(config.in);
     console.log('Loaded POST data from file');
     
     // Submit job and poll for results
@@ -332,7 +333,7 @@ async function runSingleScenarioExample() {
     client.printResultsSummary(apiResponse);
     
     // Save API response
-  client.saveApiResponse(apiResponse, 'response_2');
+  client.saveApiResponse(apiResponse, config.out);
     
   } catch (error) {
     console.error('Error running REopt scenario:', error);

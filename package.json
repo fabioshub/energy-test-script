@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node reopt-single-scenario.ts",
+    "dev": "npx tsx reopt-single-scenario.ts",
     "start": "node dist/reopt-single-scenario.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
